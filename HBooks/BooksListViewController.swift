@@ -14,6 +14,7 @@ class BooksListViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     private let bottomActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
+    @IBOutlet weak var centerActivityIndicator: UIActivityIndicatorView!
     private var mainModel: IMainModel!
     private let downloadOffset = 0 // set position before the end when we start to download a new batch of news
     override func viewDidLoad() {
@@ -33,7 +34,6 @@ class BooksListViewController: UIViewController {
     }
     
     @objc private func refreshData(){
-        //myActivityIndicator.isDownloading = true
         mainModel.refresh()
     }
 
@@ -45,8 +45,8 @@ extension BooksListViewController: IMainModelDelegate {
     func show(error message: String) {
         let alert = UIAlertController(title: "Упс, проблема", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ок", style: .default) { action in
-            //self.stopRefresh() //small fix because of alert and pull refresh at the same time
-            //self.myActivityIndicator.isDownloading = false
+            self.stopRefresh() //small fix because of alert and pull refresh at the same time
+            self.centerActivityIndicator.stopAnimating()
             self.booksTableView.tableFooterView?.isHidden = true
         })
         DispatchQueue.main.async {
@@ -57,22 +57,21 @@ extension BooksListViewController: IMainModelDelegate {
     func stopRefresh(){
         DispatchQueue.main.async {
             self.refreshControl.endRefreshing()
-            self.booksTableView.tableFooterView?.isHidden = false
-            self.booksTableView.tableFooterView = self.bottomActivityIndicator
+            //self.booksTableView.tableFooterView?.isHidden = false
+            //self.booksTableView.tableFooterView = self.bottomActivityIndicator
             
         }
     }
     
     func noMoreBooks(){
-        let alert = UIAlertController(title: "Упс, проблема", message: "Список популярных книг закончился", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ок", style: .default) { action in
-            //self.stopRefresh() //small fix because of alert and pull refresh at the same time
-            //self.myActivityIndicator.isDownloading = false
-        })
+//        let alert = UIAlertController(title: "Упс, проблема", message: "Список популярных книг закончился", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "Ок", style: .default) { action in
+//            //self.myActivityIndicator.isDownloading = false
+//        })
         DispatchQueue.main.async {
             self.booksTableView.tableFooterView?.isHidden = true
             self.booksTableView.tableFooterView = nil
-            self.present(alert, animated: true)
+            //self.present(alert, animated: true)
         }
         
     }
@@ -81,7 +80,11 @@ extension BooksListViewController: IMainModelDelegate {
 // MARK: - UITableViewDataSource
 extension BooksListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mainModel.numberOfElements
+        let num = mainModel.numberOfElements
+        if num > 0 {
+            centerActivityIndicator.stopAnimating()
+        }
+        return num
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

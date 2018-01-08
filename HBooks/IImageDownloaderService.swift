@@ -11,7 +11,7 @@ import UIKit
 
 protocol IImageDownloaderService {
     func downloadImage(with book: Book,completionHandler: @escaping (Result<UIImage>) -> Void)
-    
+    func terminateAllDownloads()
 }
     
 class ImageDownloaderService: IImageDownloaderService {
@@ -22,7 +22,7 @@ class ImageDownloaderService: IImageDownloaderService {
         self.terminateAllDownloads()
     }
     
-    private func terminateAllDownloads() {
+    func terminateAllDownloads() {
         // terminate all pending download connections
         let allDownloads = self.imageDownloadsInProgress.values
         for download in allDownloads {download.cancelDownload()}

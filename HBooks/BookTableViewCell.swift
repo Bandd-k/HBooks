@@ -20,6 +20,13 @@ class BookTableViewCell: UITableViewCell {
         coverImage.layer.cornerRadius = 4
         coverImage.layer.masksToBounds = true
     }
+    
+    override func prepareForReuse() {
+        coverImage.image = nil
+        titleLabel.text = ""
+        authorsLabel.text = ""
+        annotationLabel.text = ""
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

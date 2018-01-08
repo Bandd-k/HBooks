@@ -41,12 +41,11 @@ class BooksDataSource: NSObject, IDataSource {
             fetchRequest, managedObjectContext: context!, sectionNameKeyPath: nil,
                           cacheName: nil)
         super.init()
-        
+        fetchedResultsController.delegate = self
         do {
             try fetchedResultsController.performFetch()
         } catch {
             print ("Error fetching: \(error)")
-            //self.delegate?.show(error: "Error fetching: \(error)")
         }
         
     }

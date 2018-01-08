@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		5036BBA3200357B200B73300 /* IImageDownloaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5036BBA2200357B200B73300 /* IImageDownloaderService.swift */; };
 		5036BBA5200358B800B73300 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5036BBA4200358B800B73300 /* ImageDownloader.swift */; };
-		506FC92C2003FCBC0016BB8A /* model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506FC92B2003FCBC0016BB8A /* model.swift */; };
-		506FC92E2003FD520016BB8A /* DataDownloder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506FC92D2003FD520016BB8A /* DataDownloder.swift */; };
 		507DD49D2003F95C0015098C /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507DD49C2003F95C0015098C /* DataSource.swift */; };
 		50CD69791FFC19C9000EC9C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CD69781FFC19C9000EC9C3 /* AppDelegate.swift */; };
 		50CD697B1FFC19C9000EC9C3 /* BooksListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CD697A1FFC19C9000EC9C3 /* BooksListViewController.swift */; };
@@ -35,8 +33,6 @@
 /* Begin PBXFileReference section */
 		5036BBA2200357B200B73300 /* IImageDownloaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageDownloaderService.swift; sourceTree = "<group>"; };
 		5036BBA4200358B800B73300 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
-		506FC92B2003FCBC0016BB8A /* model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = model.swift; sourceTree = "<group>"; };
-		506FC92D2003FD520016BB8A /* DataDownloder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDownloder.swift; sourceTree = "<group>"; };
 		507DD49C2003F95C0015098C /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		50CD69751FFC19C9000EC9C3 /* HBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50CD69781FFC19C9000EC9C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,8 +99,6 @@
 				5036BBA4200358B800B73300 /* ImageDownloader.swift */,
 				50CD69A11FFE3602000EC9C3 /* MainModel.swift */,
 				507DD49C2003F95C0015098C /* DataSource.swift */,
-				506FC92D2003FD520016BB8A /* DataDownloder.swift */,
-				506FC92B2003FCBC0016BB8A /* model.swift */,
 				50CD699F1FFE33EF000EC9C3 /* String+decodedFromHtml.swift */,
 				50CD69A51FFE3EFD000EC9C3 /* Book+CoreData.swift */,
 				50CD69991FFC2AE4000EC9C3 /* PopularListParser.swift */,
@@ -200,7 +194,6 @@
 				50CD699C1FFC2FFA000EC9C3 /* RequestsConfigFactory.swift in Sources */,
 				50CD69A61FFE3EFD000EC9C3 /* Book+CoreData.swift in Sources */,
 				50CD699E1FFC30F8000EC9C3 /* ListDownloaderService.swift in Sources */,
-				506FC92C2003FCBC0016BB8A /* model.swift in Sources */,
 				5036BBA3200357B200B73300 /* IImageDownloaderService.swift in Sources */,
 				50CD69791FFC19C9000EC9C3 /* AppDelegate.swift in Sources */,
 				507DD49D2003F95C0015098C /* DataSource.swift in Sources */,
@@ -208,7 +201,6 @@
 				50CD698E1FFC1AA4000EC9C3 /* CoreDataStack.swift in Sources */,
 				50CD69A01FFE33EF000EC9C3 /* String+decodedFromHtml.swift in Sources */,
 				5036BBA5200358B800B73300 /* ImageDownloader.swift in Sources */,
-				506FC92E2003FD520016BB8A /* DataDownloder.swift in Sources */,
 				50CD699A1FFC2AE4000EC9C3 /* PopularListParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
