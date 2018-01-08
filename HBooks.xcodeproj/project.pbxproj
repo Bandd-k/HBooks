@@ -34,6 +34,7 @@
 		5036BBA2200357B200B73300 /* IImageDownloaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IImageDownloaderService.swift; sourceTree = "<group>"; };
 		5036BBA4200358B800B73300 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		507DD49C2003F95C0015098C /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		50BA05D520042B58006804E1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		50CD69751FFC19C9000EC9C3 /* HBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50CD69781FFC19C9000EC9C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50CD697A1FFC19C9000EC9C3 /* BooksListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksListViewController.swift; sourceTree = "<group>"; };
@@ -75,14 +76,6 @@
 				50CD697F1FFC19C9000EC9C3 /* HBooks.xcdatamodeld */,
 			);
 			path = CoreDataBase;
-			sourceTree = "<group>";
-		};
-		50BA05C820042919006804E1 /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-				50CD69A31FFE3E2C000EC9C3 /* StorageManager.swift */,
-			);
-			path = Storage;
 			sourceTree = "<group>";
 		};
 		50BA05C920042946006804E1 /* Networking */ = {
@@ -134,6 +127,7 @@
 		50BA05D020042A10006804E1 /* ServiceLayer */ = {
 			isa = PBXGroup;
 			children = (
+				50CD69A31FFE3E2C000EC9C3 /* StorageManager.swift */,
 				5036BBA2200357B200B73300 /* IImageDownloaderService.swift */,
 				50CD699D1FFC30F8000EC9C3 /* ListDownloaderService.swift */,
 			);
@@ -179,6 +173,7 @@
 		50CD696C1FFC19C9000EC9C3 = {
 			isa = PBXGroup;
 			children = (
+				50BA05D520042B58006804E1 /* README.md */,
 				50CD69771FFC19C9000EC9C3 /* HBooks */,
 				50CD69761FFC19C9000EC9C3 /* Products */,
 			);
@@ -196,7 +191,6 @@
 			isa = PBXGroup;
 			children = (
 				50BA05CF200429CD006804E1 /* CoreLayer */,
-				50BA05C820042919006804E1 /* Storage */,
 				50BA05D020042A10006804E1 /* ServiceLayer */,
 				50BA05D120042A32006804E1 /* PresentationLayer */,
 				50BA05D420042AE1006804E1 /* Extensions */,

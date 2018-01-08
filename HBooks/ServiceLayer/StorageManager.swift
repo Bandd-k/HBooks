@@ -16,11 +16,11 @@ protocol IStorageManager {
 }
 
 class StorageManager: IStorageManager {
-    private let coreDataStack:CoreDataStack
-    init(with coreStack:CoreDataStack){
+    private let coreDataStack: CoreDataStack
+    init(with coreStack: CoreDataStack){
         coreDataStack = coreStack
     }
-    func save(elements:[BooksApiModel], start: Int, completionHandler: @escaping (String?) -> Void){
+    func save(elements: [BooksApiModel], start: Int, completionHandler: @escaping (String?) -> Void){
         guard let context = coreDataStack.saveContext else {
             completionHandler("no saveContext")
             return
