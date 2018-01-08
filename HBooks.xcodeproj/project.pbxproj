@@ -67,6 +67,115 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		50BA05C7200428F6006804E1 /* CoreDataBase */ = {
+			isa = PBXGroup;
+			children = (
+				50CD698D1FFC1AA4000EC9C3 /* CoreDataStack.swift */,
+				50CD69A51FFE3EFD000EC9C3 /* Book+CoreData.swift */,
+				50CD697F1FFC19C9000EC9C3 /* HBooks.xcdatamodeld */,
+			);
+			path = CoreDataBase;
+			sourceTree = "<group>";
+		};
+		50BA05C820042919006804E1 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				50CD69A31FFE3E2C000EC9C3 /* StorageManager.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		50BA05C920042946006804E1 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				50BA05CB20042973006804E1 /* Parsers */,
+				50BA05CC2004298D006804E1 /* RequestSender */,
+				50BA05CD200429A6006804E1 /* RequestMaker */,
+				5036BBA4200358B800B73300 /* ImageDownloader.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		50BA05CB20042973006804E1 /* Parsers */ = {
+			isa = PBXGroup;
+			children = (
+				50CD69991FFC2AE4000EC9C3 /* PopularListParser.swift */,
+			);
+			path = Parsers;
+			sourceTree = "<group>";
+		};
+		50BA05CC2004298D006804E1 /* RequestSender */ = {
+			isa = PBXGroup;
+			children = (
+				50CD69911FFC205A000EC9C3 /* IRequestSender.swift */,
+				50CD69931FFC207D000EC9C3 /* RequestSender.swift */,
+			);
+			path = RequestSender;
+			sourceTree = "<group>";
+		};
+		50BA05CD200429A6006804E1 /* RequestMaker */ = {
+			isa = PBXGroup;
+			children = (
+				50CD699B1FFC2FFA000EC9C3 /* RequestsConfigFactory.swift */,
+				50CD69951FFC24DB000EC9C3 /* RequestMaker.swift */,
+			);
+			path = RequestMaker;
+			sourceTree = "<group>";
+		};
+		50BA05CF200429CD006804E1 /* CoreLayer */ = {
+			isa = PBXGroup;
+			children = (
+				50BA05C7200428F6006804E1 /* CoreDataBase */,
+				50BA05C920042946006804E1 /* Networking */,
+			);
+			path = CoreLayer;
+			sourceTree = "<group>";
+		};
+		50BA05D020042A10006804E1 /* ServiceLayer */ = {
+			isa = PBXGroup;
+			children = (
+				5036BBA2200357B200B73300 /* IImageDownloaderService.swift */,
+				50CD699D1FFC30F8000EC9C3 /* ListDownloaderService.swift */,
+			);
+			path = ServiceLayer;
+			sourceTree = "<group>";
+		};
+		50BA05D120042A32006804E1 /* PresentationLayer */ = {
+			isa = PBXGroup;
+			children = (
+				50CD697C1FFC19C9000EC9C3 /* Main.storyboard */,
+				50BA05D220042A48006804E1 /* Modules */,
+			);
+			path = PresentationLayer;
+			sourceTree = "<group>";
+		};
+		50BA05D220042A48006804E1 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				50BA05D320042A54006804E1 /* BookList */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		50BA05D320042A54006804E1 /* BookList */ = {
+			isa = PBXGroup;
+			children = (
+				50CD697A1FFC19C9000EC9C3 /* BooksListViewController.swift */,
+				50CD69A11FFE3602000EC9C3 /* MainModel.swift */,
+				507DD49C2003F95C0015098C /* DataSource.swift */,
+				50CD69A71FFF7DFE000EC9C3 /* BookTableViewCell.swift */,
+			);
+			path = BookList;
+			sourceTree = "<group>";
+		};
+		50BA05D420042AE1006804E1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				50CD699F1FFE33EF000EC9C3 /* String+decodedFromHtml.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		50CD696C1FFC19C9000EC9C3 = {
 			isa = PBXGroup;
 			children = (
@@ -86,28 +195,15 @@
 		50CD69771FFC19C9000EC9C3 /* HBooks */ = {
 			isa = PBXGroup;
 			children = (
-				50CD69781FFC19C9000EC9C3 /* AppDelegate.swift */,
-				50CD698D1FFC1AA4000EC9C3 /* CoreDataStack.swift */,
-				50CD697A1FFC19C9000EC9C3 /* BooksListViewController.swift */,
-				50CD69911FFC205A000EC9C3 /* IRequestSender.swift */,
-				50CD69931FFC207D000EC9C3 /* RequestSender.swift */,
-				50CD699B1FFC2FFA000EC9C3 /* RequestsConfigFactory.swift */,
-				50CD69951FFC24DB000EC9C3 /* RequestMaker.swift */,
-				50CD699D1FFC30F8000EC9C3 /* ListDownloaderService.swift */,
-				50CD69A31FFE3E2C000EC9C3 /* StorageManager.swift */,
-				5036BBA2200357B200B73300 /* IImageDownloaderService.swift */,
-				5036BBA4200358B800B73300 /* ImageDownloader.swift */,
-				50CD69A11FFE3602000EC9C3 /* MainModel.swift */,
-				507DD49C2003F95C0015098C /* DataSource.swift */,
-				50CD699F1FFE33EF000EC9C3 /* String+decodedFromHtml.swift */,
-				50CD69A51FFE3EFD000EC9C3 /* Book+CoreData.swift */,
-				50CD69991FFC2AE4000EC9C3 /* PopularListParser.swift */,
-				50CD69A71FFF7DFE000EC9C3 /* BookTableViewCell.swift */,
-				50CD697C1FFC19C9000EC9C3 /* Main.storyboard */,
+				50BA05CF200429CD006804E1 /* CoreLayer */,
+				50BA05C820042919006804E1 /* Storage */,
+				50BA05D020042A10006804E1 /* ServiceLayer */,
+				50BA05D120042A32006804E1 /* PresentationLayer */,
+				50BA05D420042AE1006804E1 /* Extensions */,
 				50CD69821FFC19C9000EC9C3 /* Assets.xcassets */,
 				50CD69841FFC19C9000EC9C3 /* LaunchScreen.storyboard */,
 				50CD69871FFC19C9000EC9C3 /* Info.plist */,
-				50CD697F1FFC19C9000EC9C3 /* HBooks.xcdatamodeld */,
+				50CD69781FFC19C9000EC9C3 /* AppDelegate.swift */,
 			);
 			path = HBooks;
 			sourceTree = "<group>";

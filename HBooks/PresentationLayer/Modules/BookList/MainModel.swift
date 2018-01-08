@@ -30,12 +30,13 @@ protocol IMainModelDelegate: class {
 class MainModel {
     private var curPage: Int = 1
     internal var noMoreBooks: Bool = false
+    private var isDonwloading = false
+    
     internal weak var delegate: IMainModelDelegate?
     private let listService: ListDownloaderService
     private let coreDataStack = CoreDataStack()
     private let storageManager: IStorageManager
     private let imageDownloader: IImageDownloaderService = ImageDownloaderService()
-    private var isDonwloading = false
     private let dataSource: IDataSource
     init(tableView: UITableView) {
         let requestSender = RequestSender()
@@ -102,7 +103,6 @@ extension MainModel : IMainModel {
                 }
             }
         }
-        
     }
     
     func downloadImage(with book: Book) {
