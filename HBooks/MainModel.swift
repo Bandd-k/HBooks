@@ -26,7 +26,6 @@ protocol IMainModelDelegate: class {
     func noMoreBooks()
     
 }
-
 class MainModel: NSObject {
     private var curPage: Int = 1
     internal var noMoreBooks: Bool = false
@@ -38,6 +37,7 @@ class MainModel: NSObject {
     private let storageManager: IStorageManager
     private let imageDownloader: IImageDownloaderService = ImageDownloaderService()
     private var isDonwloading = false
+    private let dataSource: IDataSource
     init(tableView: UITableView) {
         let requestSender = RequestSender()
         listService = ListDownloaderService(requestSender: requestSender)
@@ -45,6 +45,7 @@ class MainModel: NSObject {
         storageManager = StorageManager(with: coreDataStack)
         
         // NSFetchedResultsController
+        self.dataSource = BooksDataSource(tableView: tableView, mainContext: coreDataStack.mainContext)
         self.tableView = tableView
         let context = coreDataStack.mainContext
         let fetchRequest = NSFetchRequest<Book>(entityName: "Book")
@@ -70,106 +71,83 @@ class MainModel: NSObject {
 
 extension MainModel : IMainModel {
     var numberOfElements: Int {
-        guard let sections = fetchedResultsController.sections else {
-            return 0
-        }
-        return sections[0].numberOfObjects// only one section
+        return dataSource.numberOfElements
+//        guard let sections = fetchedResultsController.sections else {
+//            return 0
+//        }
+//        return sections[0].numberOfObjects// only one section
     }
     
     func object(at index: IndexPath) -> Book {
-        return  fetchedResultsController.object(at: index)
+        return dataSource.object(at: index)
     }
-//    func getURL(with book: String) -> {
-//        
-//    }
     
-    
-    func refresh() { // delete old news and fetch new
-        if (isDonwloading == false){
-            isDonwloading = true
-            listService.downloadList(page: 1) {[weak self] (newsList, error) in
-                guard let strongSelf = self else { return }
-                if let error = error {
+    func downloadMore(page: Int, start: Int){
+        isDonwloading = true
+        listService.downloadList(page: page) {[weak self] (newsList, error) in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                strongSelf.isDonwloading = false
+                strongSelf.delegate?.show(error: error)
+                return
+            }
+            if let newsList = newsList {
+                if newsList.isEmpty {
+                    strongSelf.noMoreBooks = true
                     strongSelf.isDonwloading = false
-                    strongSelf.delegate?.show(error: error)
-                    return
+                    strongSelf.delegate?.noMoreBooks()
                 }
-                strongSelf.delegate?.stopRefresh()
-                if let newsList = newsList {
-                    strongSelf.storageManager.refresh(elements: newsList) {[weak self] (error) in
+                else {
+                    strongSelf.storageManager.save(elements: newsList, start: start) {[weak self] (error) in
                         guard let strongSelf = self else { return }
                         strongSelf.isDonwloading = false
                         if let error = error {
                             strongSelf.delegate?.show(error: error)
                             return
                         }
-                        else{
-                            strongSelf.noMoreBooks = false
-                            strongSelf.curPage = 2
-                            strongSelf.delegate?.stopRefresh()
-                        }
-                        
+                        strongSelf.noMoreBooks = false
+                        strongSelf.curPage = page + 1
+                        strongSelf.delegate?.stopRefresh()
                     }
                 }
             }
         }
-        else {
-            delegate?.stopRefresh()
-        }
-
+        
     }
     
-    func loadMore() {
-        if (isDonwloading == false && noMoreBooks == false){
-            isDonwloading = true
-            listService.downloadList(page: curPage) {[weak self] (newsList, error) in
-                guard let strongSelf = self else { return }
-                if let error = error {
-                    strongSelf.isDonwloading = false
-                    strongSelf.delegate?.show(error: error)
-                    return
-                }
-                
-                if let newsList = newsList {
-                    if newsList.isEmpty {
-                        strongSelf.noMoreBooks = true
-                        strongSelf.isDonwloading = false
-                        strongSelf.delegate?.noMoreBooks()
-                    }
-                    else {
-                        strongSelf.storageManager.save(elements: newsList, start: strongSelf.numberOfElements) {[weak self] (error) in
-                            guard let strongSelf = self else { return }
-                            strongSelf.isDonwloading = false
-                            if let error = error {
-                                strongSelf.delegate?.show(error: error)
-                                return
-                            }
-                            strongSelf.curPage+=1
-                        }
-                    }
-                }
-            }
+    func refresh(){
+        if isDonwloading == false {
+            downloadMore(page: 1, start: 0)
         }
     }
     
+    func loadMore(){
+        if isDonwloading == false && noMoreBooks == false {
+            downloadMore(page: curPage, start: numberOfElements)
+        }
+        
+    }
     
     
     func downloadImage(with book: Book) {
+         // SELF CAPTURING
         imageDownloader.downloadImage(with: book) { (result) in
             switch result {
             case .Success(let image):
                 self.storageManager.updateBook(with: image, id: book.id!, completionHandler: { (error) in
-                    print(error)
+                    if let error = error {
+                        self.delegate?.show(error: error)
+                    }
                 })
             case .Fail(let error):
-                print(error)
+                    //self.delegate?.show(error: error) When The Internet goes offline this alert will spam too much
+                    print(error)
             }
         }
         
     }
     
 }
-
 
 // MARK: - NSFetchedResultsControllerDelegate
 extension MainModel: NSFetchedResultsControllerDelegate {

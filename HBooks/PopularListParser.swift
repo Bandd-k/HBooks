@@ -8,6 +8,9 @@
 
 import Foundation
 
+class Parser<T> {
+    func parse(data: Data) -> T? { return nil }
+}
 
 struct BooksApiModel {
     let id: String

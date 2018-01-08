@@ -12,7 +12,6 @@ import UIKit
 
 protocol IStorageManager {
     func save(elements: [BooksApiModel], start: Int, completionHandler: @escaping (String?) -> Void)
-    func refresh(elements:[BooksApiModel], completionHandler: @escaping (String?) -> Void)
     func updateBook(with image: UIImage, id: String, completionHandler: @escaping (String?) -> Void)
 }
 
@@ -29,29 +28,19 @@ class StorageManager: IStorageManager {
         for (index,element) in elements.enumerated() {
             _ = Book.insertOrUpdate(with: element.id, title: element.title, annotation: element.annotation, authors: element.authors, coverURL: element.coverURL, placeholder: element.placeholder, popularity: index + start, in: context)
         }
-        coreDataStack.performSave(context: context, completionHandler: completionHandler)
-    }
-    
-    func refresh(elements:[BooksApiModel],completionHandler: @escaping (String?) -> Void){
-        guard let context = coreDataStack.saveContext else {
-            completionHandler("no saveContext")
-            return
-        }
-        let fetchRequest = NSFetchRequest<Book>(entityName: "Book")
-        let sortByPopularity = NSSortDescriptor(key: "popularity",ascending: true)
-        fetchRequest.sortDescriptors = [sortByPopularity]
-        for (index,element) in elements.enumerated() {
-           _ = Book.insertOrUpdate(with: element.id, title: element.title, annotation: element.annotation, authors: element.authors, coverURL: element.coverURL, placeholder: element.placeholder, popularity: index, in: context)
-        }
-
-        do {
-            let result = try context.fetch(fetchRequest)  //delete everything  except just downloaded entites
-            let batch = elements.count
-            for object in result[batch...] {
-                context.delete(object)
+        if (start == 0) {
+            let fetchRequest = NSFetchRequest<Book>(entityName: "Book")
+            let sortByPopularity = NSSortDescriptor(key: "popularity",ascending: true)
+            fetchRequest.sortDescriptors = [sortByPopularity]
+            do {
+                let result = try context.fetch(fetchRequest)  //delete everything  except just downloaded entites
+                let batch = elements.count
+                for object in result[batch...] {
+                    context.delete(object)
+                }
+            } catch {
+                completionHandler("Error fetching: \(error)")
             }
-        } catch {
-            completionHandler("Error fetching: \(error)")
         }
         coreDataStack.performSave(context: context, completionHandler: completionHandler)
     }
@@ -65,6 +54,5 @@ class StorageManager: IStorageManager {
         book?.coverImage = UIImagePNGRepresentation(image)
         coreDataStack.performSave(context: context, completionHandler: completionHandler)
     }
-    
 }
 

@@ -18,7 +18,6 @@ class BooksListViewController: UIViewController {
     private let downloadOffset = 0 // set position before the end when we start to download a new batch of news
     override func viewDidLoad() {
         super.viewDidLoad()
-        //let service = ListDownloaderService(requestSender: RequestSender())
         configureController()
     }
     func configureController() {
@@ -58,6 +57,9 @@ extension BooksListViewController: IMainModelDelegate {
     func stopRefresh(){
         DispatchQueue.main.async {
             self.refreshControl.endRefreshing()
+            self.booksTableView.tableFooterView?.isHidden = false
+            self.booksTableView.tableFooterView = self.bottomActivityIndicator
+            
         }
     }
     
@@ -69,6 +71,7 @@ extension BooksListViewController: IMainModelDelegate {
         })
         DispatchQueue.main.async {
             self.booksTableView.tableFooterView?.isHidden = true
+            self.booksTableView.tableFooterView = nil
             self.present(alert, animated: true)
         }
         

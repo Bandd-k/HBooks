@@ -26,7 +26,7 @@
             </objects>
             <point key="canvasLocation" x="-766" y="-52"/>
         </scene>
-        <!--Books List View Controller-->
+        <!--Hyped Books-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="BooksListViewController" customModule="HBooks" customModuleProvider="target" sceneMemberID="viewController">
@@ -105,7 +105,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="R6z-Ft-w7I"/>
+                    <navigationItem key="navigationItem" title="Hyped Books" id="R6z-Ft-w7I"/>
                     <connections>
                         <outlet property="booksTableView" destination="F06-Dm-wPp" id="mpO-NF-0OZ"/>
                     </connections>
