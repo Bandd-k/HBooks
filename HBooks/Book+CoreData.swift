@@ -9,39 +9,38 @@
 import Foundation
 import CoreData
 extension Book {
-    static func insertBook(with id: String,title: String, annotation: String, authors: String, coverURL: String, placeholder: Data?, popularity: Int, in context: NSManagedObjectContext) -> Book? {
+    static func insertBook(with element: BooksApiModel, popularity: Int, in context: NSManagedObjectContext) -> Book? {
         if let book = NSEntityDescription.insertNewObject(forEntityName: "Book", into: context) as? Book {
-            book.id = id
-            book.title = title
-            book.annotation = annotation
-            book.authors = authors
-            book.coverURL = coverURL
-            book.coverPlaceholder = placeholder
+            book.id = element.id
+            book.title = element.title
+            book.annotation = element.annotation
+            book.authors = element.authors
+            book.coverURL = element.coverURL
+            book.coverPlaceholder = element.placeholder
             book.popularity = Int32(popularity)
             return book
         }
         return nil
     }
-    static func findOrInsertBook(with id: String, title: String, annotation: String, authors: String, coverURL: String, placeholder: Data?, popularity: Int, in context: NSManagedObjectContext) -> Book? {
-        if let book = findBook(with: id, in: context) {
+    static func findOrInsertBook(with element: BooksApiModel, popularity: Int, in context: NSManagedObjectContext) -> Book? {
+        if let book = findBook(with: element.id, in: context) {
             return book
         }
         else{
-            return insertBook(with: id, title: title, annotation: annotation, authors: authors, coverURL: coverURL, placeholder: placeholder,popularity: popularity, in: context)
+            return insertBook(with: element, popularity: popularity, in: context)
         }
     }
-    static func insertOrUpdate(with id: String, title: String, annotation: String, authors: String, coverURL: String, placeholder: Data?, popularity: Int, in context: NSManagedObjectContext){
-         if let book = findBook(with: id, in: context) {
-            book.title = title
-            book.authors = authors
-            book.coverPlaceholder = placeholder
-            book.annotation = annotation
+    static func insertOrUpdate(with element: BooksApiModel, popularity: Int, in context: NSManagedObjectContext){
+         if let book = findBook(with: element.id, in: context) {
+            book.title = element.title
+            book.authors = element.authors
+            book.coverPlaceholder = element.placeholder
+            book.annotation = element.annotation
             book.popularity = Int32(popularity)
-            book.coverURL = coverURL
-
+            book.coverURL = element.coverURL
         }
         else{
-            _ = insertBook(with: id, title: title, annotation: annotation, authors: authors, coverURL: coverURL, placeholder: placeholder,popularity: popularity, in: context)
+            _ = insertBook(with: element, popularity: popularity, in: context)
         }
     }
     

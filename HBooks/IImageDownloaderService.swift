@@ -26,7 +26,6 @@ class ImageDownloaderService: IImageDownloaderService {
         // terminate all pending download connections
         let allDownloads = self.imageDownloadsInProgress.values
         for download in allDownloads {download.cancelDownload()}
-        
         self.imageDownloadsInProgress.removeAll(keepingCapacity: false)
     }
     
@@ -36,8 +35,9 @@ class ImageDownloaderService: IImageDownloaderService {
         if imageDownloader == nil {
             imageDownloader = ImageDownloader(url: book.coverURL!)
             imageDownloadsInProgress[id] = imageDownloader
-            imageDownloader!.startDownload(completionHandler: { (result) in
-                self.imageDownloadsInProgress.removeValue(forKey: id)
+            imageDownloader!.startDownload(completionHandler: {[weak self] (result) in
+                guard let strongSelf = self else { return }
+                strongSelf.imageDownloadsInProgress.removeValue(forKey: id)
                 completionHandler(result)
             })
         }

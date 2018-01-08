@@ -26,7 +26,7 @@ class StorageManager: IStorageManager {
             return
         }
         for (index,element) in elements.enumerated() {
-            _ = Book.insertOrUpdate(with: element.id, title: element.title, annotation: element.annotation, authors: element.authors, coverURL: element.coverURL, placeholder: element.placeholder, popularity: index + start, in: context)
+            _ = Book.insertOrUpdate(with: element, popularity: index + start, in: context)
         }
         if (start == 0) {
             let fetchRequest = NSFetchRequest<Book>(entityName: "Book")
