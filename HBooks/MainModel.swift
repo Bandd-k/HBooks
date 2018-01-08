@@ -13,25 +13,30 @@ import CoreData
 protocol IMainModel {
     weak var delegate: IMainModelDelegate? { get set }
     var numberOfElements: Int { get }
+    var noMoreBooks: Bool { get }
     func object(at index: IndexPath) -> Book
     func loadMore()
     func refresh()
+    func downloadImage(with book: Book)
 }
 
 protocol IMainModelDelegate: class {
     func show(error message: String)
     func stopRefresh()
+    func noMoreBooks()
     
 }
 
 class MainModel: NSObject {
     private var curPage: Int = 1
+    internal var noMoreBooks: Bool = false
     internal weak var delegate: IMainModelDelegate?
     private unowned let tableView: UITableView
     private let fetchedResultsController: NSFetchedResultsController<Book>
     private let listService: ListDownloaderService
     private let coreDataStack = CoreDataStack()
     private let storageManager: IStorageManager
+    private let imageDownloader: IImageDownloaderService = ImageDownloaderService()
     private var isDonwloading = false
     init(tableView: UITableView) {
         let requestSender = RequestSender()
@@ -80,7 +85,7 @@ extension MainModel : IMainModel {
     
     
     func refresh() { // delete old news and fetch new
-        if (isDonwloading==false){
+        if (isDonwloading == false){
             isDonwloading = true
             listService.downloadList(page: 1) {[weak self] (newsList, error) in
                 guard let strongSelf = self else { return }
@@ -99,6 +104,7 @@ extension MainModel : IMainModel {
                             return
                         }
                         else{
+                            strongSelf.noMoreBooks = false
                             strongSelf.curPage = 2
                             strongSelf.delegate?.stopRefresh()
                         }
@@ -114,7 +120,7 @@ extension MainModel : IMainModel {
     }
     
     func loadMore() {
-        if (isDonwloading == false){
+        if (isDonwloading == false && noMoreBooks == false){
             isDonwloading = true
             listService.downloadList(page: curPage) {[weak self] (newsList, error) in
                 guard let strongSelf = self else { return }
@@ -125,18 +131,41 @@ extension MainModel : IMainModel {
                 }
                 
                 if let newsList = newsList {
-                    strongSelf.storageManager.save(elements: newsList, start: strongSelf.numberOfElements) {[weak self] (error) in
-                        guard let strongSelf = self else { return }
+                    if newsList.isEmpty {
+                        strongSelf.noMoreBooks = true
                         strongSelf.isDonwloading = false
-                        if let error = error {
-                            strongSelf.delegate?.show(error: error)
-                            return
+                        strongSelf.delegate?.noMoreBooks()
+                    }
+                    else {
+                        strongSelf.storageManager.save(elements: newsList, start: strongSelf.numberOfElements) {[weak self] (error) in
+                            guard let strongSelf = self else { return }
+                            strongSelf.isDonwloading = false
+                            if let error = error {
+                                strongSelf.delegate?.show(error: error)
+                                return
+                            }
+                            strongSelf.curPage+=1
                         }
-                        strongSelf.curPage+=1
                     }
                 }
             }
         }
+    }
+    
+    
+    
+    func downloadImage(with book: Book) {
+        imageDownloader.downloadImage(with: book) { (result) in
+            switch result {
+            case .Success(let image):
+                self.storageManager.updateBook(with: image, id: book.id!, completionHandler: { (error) in
+                    print(error)
+                })
+            case .Fail(let error):
+                print(error)
+            }
+        }
+        
     }
     
 }
@@ -176,7 +205,7 @@ extension MainModel: NSFetchedResultsControllerDelegate {
             }
         case .update:
             if let indexPath = indexPath {
-                tableView.reloadRows(at: [indexPath], with: .automatic)
+                tableView.reloadRows(at: [indexPath], with: .none)
             }
         }
     }

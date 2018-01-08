@@ -24,11 +24,11 @@ class BooksListViewController: UIViewController {
     func configureController() {
         
         mainModel = MainModel(tableView: booksTableView)
-        mainModel.loadMore()
         mainModel.delegate = self
         booksTableView.delegate = self
         booksTableView.dataSource = self
         booksTableView.backgroundView = refreshControl
+        booksTableView.tableFooterView = bottomActivityIndicator
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: "обновление", attributes: nil)
     }
@@ -60,6 +60,19 @@ extension BooksListViewController: IMainModelDelegate {
             self.refreshControl.endRefreshing()
         }
     }
+    
+    func noMoreBooks(){
+        let alert = UIAlertController(title: "Упс, проблема", message: "Список популярных книг закончился", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ок", style: .default) { action in
+            //self.stopRefresh() //small fix because of alert and pull refresh at the same time
+            //self.myActivityIndicator.isDownloading = false
+        })
+        DispatchQueue.main.async {
+            self.booksTableView.tableFooterView?.isHidden = true
+            self.present(alert, animated: true)
+        }
+        
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -70,6 +83,7 @@ extension BooksListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell") as! BookTableViewCell
+        
         configureCell(cell: cell, with: mainModel.object(at: indexPath))
         return cell
     }
@@ -78,7 +92,13 @@ extension BooksListViewController: UITableViewDataSource {
         cell.titleLabel.text = data.title
         cell.annotationLabel.text = data.annotation
         cell.authorsLabel.text = data.authors
-        cell.coverImage.image = UIImage(data: data.coverPlaceholder!)
+        if data.coverImage == nil {
+            mainModel.downloadImage(with: data)
+            cell.coverImage.image = UIImage(data: data.coverPlaceholder!)
+        }
+        else{
+            cell.coverImage.image = UIImage(data: data.coverImage!)
+        }
     }
 
 
@@ -88,12 +108,17 @@ extension BooksListViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension BooksListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
         if mainModel.numberOfElements == indexPath.row + 1 + downloadOffset {
-            tableView.tableFooterView = bottomActivityIndicator
-            bottomActivityIndicator.startAnimating()
-            mainModel.loadMore()
+            if mainModel.noMoreBooks == false {
+                booksTableView.tableFooterView?.isHidden = false
+                bottomActivityIndicator.startAnimating()
+                mainModel.loadMore()
+            }
         }
+        
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         booksTableView.deselectRow(at: indexPath, animated: true)
@@ -101,8 +126,7 @@ extension BooksListViewController: UITableViewDelegate {
         let svc = SFSafariViewController(url: URL(string: "https://bookmate.com/books/\(bookID!)")!)
         self.present(svc, animated: true, completion: nil)
     }
-
-
+    
 }
 
 

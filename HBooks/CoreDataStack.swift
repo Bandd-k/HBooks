@@ -112,7 +112,7 @@ class CoreDataStack {
     
     
     public func performSave(context:NSManagedObjectContext,completionHandler: @escaping (String?) -> Void ){
-        if context.hasChanges{
+        if context.hasChanges {
             print("context saved")
             context.perform { [weak self] in
                 do{

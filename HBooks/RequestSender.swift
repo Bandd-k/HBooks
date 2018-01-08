@@ -28,7 +28,6 @@ class RequestSender: IRequestSender {
                     completionHandler(Result.Fail("recieved data can't be parsed"))
                     return
             }
-            
             completionHandler(Result.Success(parsedModel))
         }
         

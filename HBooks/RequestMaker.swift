@@ -8,7 +8,6 @@
 import Foundation
 
 protocol IRequestMaker {
-    func contentRequest(id: String) -> URLRequest?
     func listRequest(page: Int) -> URLRequest?
 }
 
@@ -18,19 +17,9 @@ class RequestMaker: IRequestMaker {
     private let apiVersion = "v5/"
     private let objectString = "books/"
     private let popularString = "popular?"
-    private let contentString = "https://bookmate.com/books/"
     
     func listRequest(page: Int) -> URLRequest? {
         let urlString: String = baseUrl + apiVersion + objectString + popularString  + "page=\(page)"
-        if let url = URL(string: urlString) {
-            return URLRequest(url: url)
-        }
-        return nil
-    }
-    func contentRequest(id: String) -> URLRequest? {
-        // https://bookmate.com/books/{id}
-        
-        let urlString: String = contentString + id
         if let url = URL(string: urlString) {
             return URLRequest(url: url)
         }
