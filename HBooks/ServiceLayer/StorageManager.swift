@@ -46,7 +46,7 @@ class StorageManager: IStorageManager {
     }
     
     func updateBook(with image: UIImage, id: String, completionHandler: @escaping (String?) -> Void) {
-        guard let context = coreDataStack.mainContext else {
+        guard let context = coreDataStack.saveContext else {
             completionHandler("no saveContext")
             return
         }

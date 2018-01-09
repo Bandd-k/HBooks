@@ -48,7 +48,7 @@ class ListParser: Parser<[BooksApiModel]> {
             }
             return parsedBooks
             
-        } catch  {
+        } catch {
             print("error trying to convert data to JSON")
             return nil
         }

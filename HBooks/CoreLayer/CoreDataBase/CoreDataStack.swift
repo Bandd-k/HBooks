@@ -13,14 +13,14 @@ import CoreData
 class CoreDataStack {
     private var storeURL: URL {
         get{
-            let documentsDirURL : URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let documentsDirURL: URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
             let url = documentsDirURL.appendingPathComponent("Store.sqlite")
             return url
         }
     }
     private let managedObjectModelName = "HBooks"
-    private var _managedObjectModel : NSManagedObjectModel?
-    private var managedObjectModel :NSManagedObjectModel? {
+    private var _managedObjectModel: NSManagedObjectModel?
+    private var managedObjectModel: NSManagedObjectModel? {
         get {
             if _managedObjectModel == nil{
                 guard let modelURL = Bundle.main.url(forResource: managedObjectModelName, withExtension: "momd") else{
@@ -55,7 +55,7 @@ class CoreDataStack {
     
     // Master context, save
     private var _masterContext: NSManagedObjectContext?
-    private var masterContext : NSManagedObjectContext? {
+    private var masterContext: NSManagedObjectContext? {
         get {
             if _masterContext == nil {
                 let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -74,7 +74,7 @@ class CoreDataStack {
     
     // Main context, UI
     private var _mainContext: NSManagedObjectContext?
-    public var mainContext : NSManagedObjectContext? {
+    public var mainContext: NSManagedObjectContext? {
         get {
             if _mainContext == nil {
                 let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
@@ -93,7 +93,7 @@ class CoreDataStack {
     
     // Save context, import
     private var _saveContext: NSManagedObjectContext?
-    public var saveContext : NSManagedObjectContext? {
+    public var saveContext: NSManagedObjectContext? {
         get {
             if _saveContext == nil {
                 let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
